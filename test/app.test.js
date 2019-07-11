@@ -14,7 +14,7 @@ describe('Twitter clone static page', () => {
   });
 });
 
-describe('Twitter routes', () => {
+describe('POST tweet route', () => {
   it('creates a tweet', () => {
     return request(app)
       .post('/api/v1/tweets')
@@ -24,7 +24,9 @@ describe('Twitter routes', () => {
         expect(res.body).toEqual(expect.any(Object));
       });
   });
+});
 
+describe('GET tweets route', () => {
   it('returns all tweets', () => {
     return request(app)
       .get('/api/v1/tweets')
@@ -57,14 +59,14 @@ describe('Twitter routes', () => {
   });
 });
 
-describe('get a tweet by id route', () => {
-  beforeEach(() => {
+describe('GET tweet by id route', () => {
+  beforeAll(() => {
     return request(app)
       .post('/api/v1/tweets')
       .send({ tweet: { handle: 'jack', text: 'This is a test tweet' } });
   });
 
-  it('returns a requested tweet', () => {
+  it('returns the requested tweet', () => {
     return request(app)
       .get('/api/v1/tweets/2')
       .then(res => {
@@ -72,7 +74,7 @@ describe('get a tweet by id route', () => {
       });
   });
 
-  it('returns a requested tweet', () => {
+  it('returns an error if the tweet doesn`t exist', () => {
     return request(app)
       .get('/api/v1/tweets/100000')
       .then(res => {
@@ -82,24 +84,24 @@ describe('get a tweet by id route', () => {
   });
 });
 
-describe('delete a tweet by id route', () => {
-  it('deletes a tweet for a given id', () => {
-    return request(app)
-      .delete('/api/v1/tweets/1')
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body).toEqual(expectedTweets);
-      });
-  });
-});
-
-describe('update a tweet by id route', () => {
+describe('PUT tweet by id route', () => {
   it('updates a tweet for a given id', () => {
     return request(app)
       .put('/api/v1/tweets/2')
       .send({ handle: 'john', text: 'lorem ipsum' })
       .then(res => {
         expect(res.body).toEqual({ handle: 'john', text: 'lorem ipsum', _id: 2 });
+      });
+  });
+});
+
+describe('DELETE tweet by id route', () => {
+  it('deletes a tweet for a given id', () => {
+    return request(app)
+      .delete('/api/v1/tweets/1')
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual(expectedTweets);
       });
   });
 });
