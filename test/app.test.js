@@ -55,4 +55,28 @@ describe('Twitter routes', () => {
         expect(res.body).toEqual('Please provide some text for your tweet.');
       });
   });
+
+  it('returns a requested tweet', () => {
+
+  });
+});
+
+describe('Get a tweet by id route', () => {
+  beforeEach(() => {
+    return request(app)
+      .post('/tweets')
+      .send({ tweet: { handle: 'jack', text: 'This is a test tweet' } });
+  });
+
+  afterEach(() => {
+  });
+
+  it('returns a requested tweet', () => {
+    return request(app)
+      .get('/tweets/2')
+      .then(res => {
+        console.log(expectedTweets);
+        console.log(res.body);
+      });
+  });
 });
