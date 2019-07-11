@@ -93,6 +93,26 @@ describe('PUT tweet by id route', () => {
         expect(res.body).toEqual({ handle: 'john', text: 'lorem ipsum', _id: 2 });
       });
   });
+
+  it('returns an error for a update without a handle', () => {
+    return request(app)
+      .put('/api/v1/tweets/2')
+      .send({ handle: '', text: 'lorem ipsum' })
+      .then(res => {
+        expect(res.status).toEqual(400);
+        expect(res.body).toEqual('Please provide a handle with your tweet.');
+      });
+  });
+
+  it('returns an error for a update without text', () => {
+    return request(app)
+      .put('/api/v1/tweets/2')
+      .send({ handle: 'john', text: '' })
+      .then(res => {
+        expect(res.status).toEqual(400);
+        expect(res.body).toEqual('Please provide some text for your tweet.');
+      });
+  });
 });
 
 describe('DELETE tweet by id route', () => {
