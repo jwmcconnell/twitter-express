@@ -55,20 +55,13 @@ describe('Twitter routes', () => {
         expect(res.body).toEqual('Please provide some text for your tweet.');
       });
   });
-
-  it('returns a requested tweet', () => {
-
-  });
 });
 
-describe('Get a tweet by id route', () => {
+describe('get a tweet by id route', () => {
   beforeEach(() => {
     return request(app)
       .post('/tweets')
       .send({ tweet: { handle: 'jack', text: 'This is a test tweet' } });
-  });
-
-  afterEach(() => {
   });
 
   it('returns a requested tweet', () => {
@@ -85,6 +78,17 @@ describe('Get a tweet by id route', () => {
       .then(res => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual('No tweet found with this id.');
+      });
+  });
+});
+
+describe('delete a tweet by id route', () => {
+  it('deletes a tweet for a given id', () => {
+    return request(app)
+      .delete('/tweets/1')
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual(expectedTweets);
       });
   });
 });
