@@ -15,6 +15,16 @@ describe('Twitter clone static page', () => {
 });
 
 describe('Twitter routes', () => {
+  it('creates a tweet', () => {
+    return request(app)
+      .post('/api/v1/tweets')
+      .send({ tweet: { handle: 'bob', text: 'I am test tweet' } })
+      .then(res => {
+        expect(res.body).toEqual({ handle: 'bob', text: 'I am test tweet', _id: 1 });
+        expect(res.body).toEqual(expect.any(Object));
+      });
+  });
+
   it('returns all tweets', () => {
     return request(app)
       .get('/api/v1/tweets')
@@ -23,16 +33,6 @@ describe('Twitter routes', () => {
         expect(tweets).toEqual(expectedTweets);
         expect(tweets).toEqual(expect.any(Array));
         expect(res.status).toEqual(200);
-      });
-  });
-
-  it('creates a tweet', () => {
-    return request(app)
-      .post('/api/v1/tweets')
-      .send({ tweet: { handle: 'bob', text: 'I am test tweet' } })
-      .then(res => {
-        expect(res.body).toEqual({ handle: 'bob', text: 'I am test tweet', _id: 1 });
-        expect(res.body).toEqual(expect.any(Object));
       });
   });
 
