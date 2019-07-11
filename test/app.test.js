@@ -24,19 +24,6 @@ describe('POST tweet route', () => {
         expect(res.body).toEqual(expect.any(Object));
       });
   });
-});
-
-describe('GET tweets route', () => {
-  it('returns all tweets', () => {
-    return request(app)
-      .get('/api/v1/tweets')
-      .then(res => {
-        const tweets = JSON.parse(res.text);
-        expect(tweets).toEqual(expectedTweets);
-        expect(tweets).toEqual(expect.any(Array));
-        expect(res.status).toEqual(200);
-      });
-  });
 
   it('returns an error for a tweet without a handle', () => {
     return request(app)
@@ -55,6 +42,19 @@ describe('GET tweets route', () => {
       .then(res => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual('Please provide some text for your tweet.');
+      });
+  });
+});
+
+describe('GET tweets route', () => {
+  it('returns all tweets', () => {
+    return request(app)
+      .get('/api/v1/tweets')
+      .then(res => {
+        const tweets = JSON.parse(res.text);
+        expect(tweets).toEqual(expectedTweets);
+        expect(tweets).toEqual(expect.any(Array));
+        expect(res.status).toEqual(200);
       });
   });
 });
