@@ -101,7 +101,7 @@ describe('DELETE tweet by id route', () => {
       .delete('/api/v1/tweets/1')
       .then(res => {
         expect(res.status).toEqual(200);
-        expect(res.body).toEqual(expectedTweets);
+        expect(res.body).toEqual({ handle: 'bob', text: 'I am test tweet', _id: 1 });
       });
   });
 });
