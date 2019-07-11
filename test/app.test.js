@@ -75,8 +75,16 @@ describe('Get a tweet by id route', () => {
     return request(app)
       .get('/tweets/2')
       .then(res => {
-        console.log(expectedTweets);
-        console.log(res.body);
+        expect(res.body).toEqual({ handle: 'jack', text: 'This is a test tweet', _id: 2 });
+      });
+  });
+
+  it('returns a requested tweet', () => {
+    return request(app)
+      .get('/tweets/100000')
+      .then(res => {
+        expect(res.status).toEqual(400);
+        expect(res.body).toEqual('No tweet found with this id.');
       });
   });
 });
