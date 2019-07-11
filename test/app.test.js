@@ -92,3 +92,14 @@ describe('delete a tweet by id route', () => {
       });
   });
 });
+
+describe('update a tweet by id route', () => {
+  it('updates a tweet for a given id', () => {
+    return request(app)
+      .put('/api/v1/tweets/2')
+      .send({ handle: 'john', text: 'lorem ipsum' })
+      .then(res => {
+        expect(res.body).toEqual({ handle: 'john', text: 'lorem ipsum', _id: 2 });
+      });
+  });
+});
