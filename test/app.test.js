@@ -2,8 +2,6 @@ const { getTweet } = require('./dataHelpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
-const expectedTweets = require('../lib/tweets.json').tweets;
-
 describe('Twitter clone static page', () => {
   it('returns a home page', () => {
     return request(app)
