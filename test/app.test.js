@@ -84,8 +84,10 @@ describe('DELETE tweet by id route', () => {
     return request(app)
       .delete(`/api/v1/tweets/${_id}`)
       .then(res => {
-        console.log(res.body);
         expect(res.ok).toBeTruthy();
+        expect(res.body._id).toEqual(_id);
+        expect(res.body.handle).toEqual(handle);
+        expect(res.body.text).toEqual(text);
       });
   });
 });
