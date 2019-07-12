@@ -111,4 +111,26 @@ describe('PUT tweet by id route', () => {
         expect(res.ok).toBeTruthy();
       });
   });
+
+  it('returns an error when there is no handle in the request', async() => {
+    const { _id } = await getTweet();
+    return request(app)
+      .put(`/api/v1/tweets/${_id}`)
+      .send({ handle: '', text: 'updated tweet' })
+      .then(res => {
+        expect(res.body).toEqual('Please provide a handle with your tweet.');
+        expect(res.ok).toBeFalsy();
+      });
+  });
+
+  it('returns an error when there is no text in the request', async() => {
+    const { _id } = await getTweet();
+    return request(app)
+      .put(`/api/v1/tweets/${_id}`)
+      .send({ handle: 'Jack', text: '' })
+      .then(res => {
+        expect(res.body).toEqual('Please provide some text for your tweet.');
+        expect(res.ok).toBeFalsy();
+      });
+  });
 });
