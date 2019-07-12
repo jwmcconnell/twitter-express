@@ -1,3 +1,4 @@
+const { getTweet } = require('./dataHelpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -20,8 +21,12 @@ describe('POST tweet route', () => {
       .post('/api/v1/tweets')
       .send({ tweet: { handle: 'bob', text: 'I am test tweet' } })
       .then(res => {
-        expect(res.body).toEqual({ handle: 'bob', text: 'I am test tweet', _id: 1 });
-        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: expect.any(String),
+          text: expect.any(String),
+          __v: 0
+        });
       });
   });
 
@@ -60,68 +65,15 @@ describe('GET tweets route', () => {
 });
 
 describe('GET tweet by id route', () => {
-  beforeAll(() => {
+  it('returns the requested tweet', async() => {
+    const { _id, handle, text } = await getTweet();
     return request(app)
-      .post('/api/v1/tweets')
-      .send({ tweet: { handle: 'jack', text: 'This is a test tweet' } });
-  });
-
-  it('returns the requested tweet', () => {
-    return request(app)
-      .get('/api/v1/tweets/2')
+      .get(`/api/v1/tweets/${_id}`)
       .then(res => {
-        expect(res.body).toEqual({ handle: 'jack', text: 'This is a test tweet', _id: 2 });
-      });
-  });
-
-  it('returns an error if the tweet doesn`t exist', () => {
-    return request(app)
-      .get('/api/v1/tweets/100000')
-      .then(res => {
-        expect(res.status).toEqual(400);
-        expect(res.body).toEqual('No tweet found with this id.');
-      });
-  });
-});
-
-describe('PUT tweet by id route', () => {
-  it('updates a tweet for a given id', () => {
-    return request(app)
-      .put('/api/v1/tweets/2')
-      .send({ handle: 'john', text: 'lorem ipsum' })
-      .then(res => {
-        expect(res.body).toEqual({ handle: 'john', text: 'lorem ipsum', _id: 2 });
-      });
-  });
-
-  it('returns an error for a update without a handle', () => {
-    return request(app)
-      .put('/api/v1/tweets/2')
-      .send({ handle: '', text: 'lorem ipsum' })
-      .then(res => {
-        expect(res.status).toEqual(400);
-        expect(res.body).toEqual('Please provide a handle with your tweet.');
-      });
-  });
-
-  it('returns an error for a update without text', () => {
-    return request(app)
-      .put('/api/v1/tweets/2')
-      .send({ handle: 'john', text: '' })
-      .then(res => {
-        expect(res.status).toEqual(400);
-        expect(res.body).toEqual('Please provide some text for your tweet.');
-      });
-  });
-});
-
-describe('DELETE tweet by id route', () => {
-  it('deletes a tweet for a given id', () => {
-    return request(app)
-      .delete('/api/v1/tweets/1')
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body).toEqual({ handle: 'bob', text: 'I am test tweet', _id: 1 });
+        expect(res.ok).toBeTruthy();
+        expect(res.body).toBeTruthy();
+        expect(handle).toEqual('Jack');
+        expect(text).toEqual('This is a test tweet');
       });
   });
 });
