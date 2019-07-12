@@ -94,3 +94,21 @@ describe('DELETE tweet by id route', () => {
       });
   });
 });
+
+describe('PUT tweet by id route', () => {
+  it('returns the updated tweet', async() => {
+    const { _id } = await getTweet();
+    return request(app)
+      .put(`/api/v1/tweets/${_id}`)
+      .send({ handle: 'Jack', text: 'updated tweet' })
+      .then(res => {
+        expect(res.body).toEqual({
+          handle: 'Jack',
+          text: 'updated tweet',
+          _id,
+          __v: 0
+        });
+        expect(res.ok).toBeTruthy();
+      });
+  });
+});
