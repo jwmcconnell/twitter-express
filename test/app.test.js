@@ -17,7 +17,7 @@ describe('POST tweet route', () => {
   it('creates a tweet', () => {
     return request(app)
       .post('/api/v1/tweets')
-      .send({ tweet: { handle: 'bob', text: 'I am test tweet' } })
+      .send({ handle: 'bob', text: 'I am test tweet' })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
@@ -31,7 +31,7 @@ describe('POST tweet route', () => {
   it('returns an error for a tweet without a handle', () => {
     return request(app)
       .post('/api/v1/tweets')
-      .send({ tweet: { handle: '', text: 'I am test tweet' } })
+      .send({ handle: '', text: 'I am test tweet' })
       .then(res => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual('Please provide a handle with your tweet.');
@@ -41,7 +41,7 @@ describe('POST tweet route', () => {
   it('returns an error for a tweet without text', () => {
     return request(app)
       .post('/api/v1/tweets')
-      .send({ tweet: { handle: 'jack', text: '' } })
+      .send({ handle: 'jack', text: '' })
       .then(res => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual('Please provide some text for your tweet.');
