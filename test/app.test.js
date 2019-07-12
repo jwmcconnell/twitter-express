@@ -77,3 +77,15 @@ describe('GET tweet by id route', () => {
       });
   });
 });
+
+describe('DELETE tweet by id route', () => {
+  it('deletes and returns the requested tweet', async() => {
+    const { _id, handle, text } = await getTweet();
+    return request(app)
+      .delete(`/api/v1/tweets/${_id}`)
+      .then(res => {
+        console.log(res.body);
+        expect(res.ok).toBeTruthy();
+      });
+  });
+});
