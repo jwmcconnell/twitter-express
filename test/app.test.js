@@ -57,8 +57,13 @@ describe('GET tweets route', () => {
       .get('/api/v1/tweets')
       .then(res => {
         const tweets = JSON.parse(res.text);
-        expect(tweets).toEqual(expectedTweets);
         expect(tweets).toEqual(expect.any(Array));
+        expect(tweets[0]).toEqual({
+          _id: expect.any(String),
+          handle: expect.any(String),
+          text: expect.any(String),
+          __v: 0
+        });
         expect(res.status).toEqual(200);
       });
   });
