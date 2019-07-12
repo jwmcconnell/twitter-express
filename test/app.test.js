@@ -72,8 +72,8 @@ describe('GET tweet by id route', () => {
       .then(res => {
         expect(res.ok).toBeTruthy();
         expect(res.body).toBeTruthy();
-        expect(handle).toEqual('Jack');
-        expect(text).toEqual('This is a test tweet');
+        expect(res.body.handle).toEqual(handle);
+        expect(res.body.text).toEqual(text);
       });
   });
 });
